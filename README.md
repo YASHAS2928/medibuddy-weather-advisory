@@ -162,7 +162,7 @@ Add a validated entry to `policies/sops.yaml` with a unique ID, applicability ac
 
 ## Deployment
 
-`render.yaml` defines separate Render web services for FastAPI and Streamlit. Configure `LLM_API_KEY` and `LLM_MODEL` as backend secrets in Render. The frontend receives the backend's internal `hostport` through service linking; no secret is stored in the blueprint.
+`render.yaml` defines separate free Render web services for FastAPI and Streamlit. Configure `LLM_API_KEY` and `LLM_MODEL` as backend secrets in Render. The frontend receives the backend's public `RENDER_EXTERNAL_URL` through service linking; no secret is stored in the blueprint. Free services may sleep and restart, which clears the in-memory conversation state.
 
 ## Known Limitations
 
