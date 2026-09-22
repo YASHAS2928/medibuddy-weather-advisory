@@ -95,11 +95,19 @@ async def extract_intent(
         except Exception as exc:
             body = getattr(exc, "body", None)
             error_code = body.get("code") if isinstance(body, dict) else None
+            cause_types = []
+            cause = exc.__cause__
+            for _ in range(3):
+                if cause is None:
+                    break
+                cause_types.append(type(cause).__name__)
+                cause = cause.__cause__
             logger.error(
-                "LLM structured extraction failed: type=%s status=%s code=%s",
+                "LLM structured extraction failed: type=%s status=%s code=%s causes=%s",
                 type(exc).__name__,
                 getattr(exc, "status_code", None),
                 error_code,
+                ">".join(cause_types) or "none",
             )
             raise IntentExtractionError("LLM intent extraction failed") from exc
     finally:
