@@ -1,0 +1,181 @@
+sops:
+  - id: SOP-WIND-CYCLING-01
+    title: High wind while cycling
+    category: outdoor_activity
+    severity: HIGH
+    priority: 80
+    applies_to:
+      activities: [cycling]
+      audiences: [general, adult]
+    conditions:
+      field: wind_speed_kmh
+      operator: gt
+      value: 40
+    guidance: Consider postponing cycling until wind conditions improve.
+
+  - id: SOP-WIND-TWO-WHEELER-01
+    title: Very high wind for two-wheelers
+    category: travel
+    severity: SEVERE
+    priority: 95
+    applies_to:
+      activities: [two_wheeler]
+      audiences: [general, adult]
+    conditions:
+      field: wind_speed_kmh
+      operator: gt
+      value: 55
+    guidance: Avoid two-wheeler travel until winds ease.
+
+  - id: SOP-THUNDER-OUTDOOR-01
+    title: Thunderstorm during outdoor activity
+    category: outdoor_activity
+    severity: SEVERE
+    priority: 100
+    applies_to:
+      activities: [walking, running, outdoor_exercise, picnic, outdoor_event, general_outdoor]
+      audiences: [general, adult, child, elderly, pet]
+    conditions:
+      field: weather_code
+      operator: in
+      value: [95, 96, 99]
+    guidance: Move indoors and postpone outdoor activity until the thunderstorm has passed.
+
+  - id: SOP-RAIN-TRAVEL-01
+    title: Heavy rain affecting travel
+    category: travel
+    severity: HIGH
+    priority: 85
+    applies_to:
+      activities: [travel, two_wheeler]
+      audiences: [general, adult, child, elderly]
+    conditions:
+      field: precipitation_mm
+      operator: gte
+      value: 10
+    guidance: Allow extra travel time and avoid routes prone to waterlogging.
+
+  - id: SOP-RAIN-PICNIC-01
+    title: Rain risk for a picnic
+    category: outdoor_activity
+    severity: MODERATE
+    priority: 55
+    applies_to:
+      activities: [picnic]
+      audiences: [general, adult, child, elderly]
+    intent_examples:
+      - Can we have lunch at the park?
+      - Is today good for an outdoor gathering?
+      - Can the family eat outside?
+    conditions:
+      field: precipitation_probability
+      operator: gte
+      value: 60
+    guidance: Consider a sheltered venue or rescheduling the picnic.
+
+  - id: SOP-UV-PROLONGED-OUTDOOR-01
+    title: High UV during prolonged outdoor exposure
+    category: outdoor_activity
+    severity: HIGH
+    priority: 70
+    applies_to:
+      activities: [walking, running, outdoor_exercise, picnic, outdoor_event, general_outdoor]
+      audiences: [general, adult, child, elderly]
+    conditions:
+      field: uv_index
+      operator: gte
+      value: 8
+    guidance: Reduce time in direct sun and use shade and sun protection.
+
+  - id: SOP-HEAT-EXERCISE-01
+    title: Extreme heat during strenuous exercise
+    category: outdoor_activity
+    severity: SEVERE
+    priority: 90
+    applies_to:
+      activities: [running, outdoor_exercise]
+      audiences: [general, adult]
+    conditions:
+      field: apparent_temperature_c
+      operator: gte
+      value: 40
+    guidance: Postpone strenuous exercise or move it to a cooler indoor setting.
+
+  - id: SOP-HEAT-ELDERLY-01
+    title: High heat exposure for elderly people
+    category: vulnerable_people
+    severity: HIGH
+    priority: 78
+    applies_to:
+      activities: [walking, outdoor_exercise, travel, picnic, outdoor_event, general_outdoor]
+      audiences: [elderly]
+    conditions:
+      field: apparent_temperature_c
+      operator: gte
+      value: 35
+    guidance: Limit outdoor exposure, stay hydrated, and seek a cooler setting.
+
+  - id: SOP-HEAT-CHILDREN-01
+    title: High heat exposure for children
+    category: vulnerable_people
+    severity: HIGH
+    priority: 76
+    applies_to:
+      activities: [walking, running, outdoor_exercise, travel, picnic, outdoor_event, general_outdoor]
+      audiences: [child]
+    conditions:
+      field: apparent_temperature_c
+      operator: gte
+      value: 35
+    guidance: Shorten outdoor time, provide frequent water breaks, and use shade.
+
+  - id: SOP-VISIBILITY-TRAVEL-01
+    title: Poor visibility affecting travel
+    category: travel
+    severity: HIGH
+    priority: 88
+    applies_to:
+      activities: [travel, two_wheeler]
+      audiences: [general, adult, elderly]
+    conditions:
+      field: visibility_m
+      operator: lt
+      value: 1000
+    guidance: Delay non-essential travel or proceed slowly with increased stopping distance.
+
+  - id: SOP-RAIN-WIND-EVENT-01
+    title: Combined rain and wind at an outdoor event
+    category: outdoor_activity
+    severity: HIGH
+    priority: 82
+    applies_to:
+      activities: [outdoor_event]
+      audiences: [general, adult, child, elderly]
+    conditions:
+      all:
+        - field: precipitation_mm
+          operator: gte
+          value: 5
+        - any:
+            - field: wind_speed_kmh
+              operator: gte
+              value: 30
+            - field: wind_gust_kmh
+              operator: gte
+              value: 45
+    guidance: Consider postponing the event or moving it to a secure indoor venue.
+    rationale: Rain combined with sustained wind or strong gusts can affect temporary outdoor setups.
+
+  - id: SOP-RAIN-PREPAREDNESS-01
+    title: Possible rain during general outdoor plans
+    category: outdoor_activity
+    severity: LOW
+    priority: 30
+    applies_to:
+      activities: [walking, general_outdoor]
+      audiences: [general, adult, child, elderly]
+    conditions:
+      field: precipitation_probability
+      operator: between
+      value: [30, 59]
+    guidance: Keep rain protection available and check conditions before leaving.

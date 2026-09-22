@@ -1,0 +1,38 @@
+{
+  "provenance": {
+    "source": "Open-Meteo",
+    "api_type": "Historical Weather API (archive)",
+    "location": "Bhopal, Madhya Pradesh, India",
+    "requested_latitude": 23.2599,
+    "requested_longitude": 77.4126,
+    "returned_latitude": 23.233742,
+    "returned_longitude": 77.452835,
+    "timezone": "Asia/Kolkata",
+    "weather_timestamp": "2024-05-20T13:00:00+05:30",
+    "retrieval_timestamp": "2026-09-22T14:26:22.018982+00:00",
+    "endpoint": "https://archive-api.open-meteo.com/v1/archive?latitude=23.2599&longitude=77.4126&start_date=2024-05-20&end_date=2024-05-20&hourly=apparent_temperature%2Cweather_code%2Cwind_speed_10m%2Cwind_gusts_10m%2Cprecipitation%2Cuv_index&timezone=Asia%2FKolkata&wind_speed_unit=kmh&temperature_unit=celsius&precipitation_unit=mm",
+    "data_kind": "historical archive",
+    "note": "uv_index was returned as null/undefined by the archive endpoint. Values below are the exact selected provider row, mapped to WeatherFacts names."
+  },
+  "provider_row": {
+    "time": "2024-05-20T13:00",
+    "apparent_temperature": 44.0,
+    "weather_code": 0,
+    "wind_speed_10m": 5.8,
+    "wind_gusts_10m": 22.3,
+    "precipitation": 0.0,
+    "uv_index": null
+  },
+  "normalized_weather": {
+    "apparent_temperature_c": 44.0,
+    "weather_code": 0,
+    "wind_speed_kmh": 5.8,
+    "wind_gust_kmh": 22.3,
+    "precipitation_mm": 0.0,
+    "uv_index": null,
+    "latitude": 23.233742,
+    "longitude": 77.452835,
+    "timezone": "Asia/Kolkata",
+    "observed_at": "2024-05-20T13:00:00+05:30"
+  }
+}
