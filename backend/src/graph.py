@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Awaitable, Callable
 from datetime import datetime
+import logging
 from typing import Any
 
 from langgraph.checkpoint.memory import InMemorySaver
@@ -51,6 +52,8 @@ LocationResolver = Callable[[str], Awaitable[ResolvedLocation]]
 WeatherFetcher = Callable[
     [ResolvedLocation, EvidencePlan, datetime], Awaitable[WeatherFacts]
 ]
+
+logger = logging.getLogger(__name__)
 
 
 def _response_update(
@@ -184,6 +187,11 @@ def create_graph(
             )
             return {"weather": weather}
         except (WeatherServiceError, WeatherDataError) as exc:
+            logger.warning(
+                "Weather evidence fetch failed: type=%s reason=%s",
+                type(exc).__name__,
+                exc,
+            )
             return {"error": str(exc), "status": AdvisoryStatus.WEATHER_ERROR}
         except Exception as exc:  # pragma: no cover - defensive boundary
             return {"error": str(exc), "status": AdvisoryStatus.INTERNAL_ERROR}
