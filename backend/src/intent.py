@@ -1,4 +1,5 @@
 import json
+import logging
 
 from pydantic import ValidationError
 
@@ -9,6 +10,9 @@ from backend.src.policies import SOP
 
 class IntentExtractionError(RuntimeError):
     pass
+
+
+logger = logging.getLogger(__name__)
 
 
 def canonical_activities(policies: list[SOP]) -> list[str]:
@@ -89,6 +93,14 @@ async def extract_intent(
                 text_format=IntentUpdate,
             )
         except Exception as exc:
+            body = getattr(exc, "body", None)
+            error_code = body.get("code") if isinstance(body, dict) else None
+            logger.error(
+                "LLM structured extraction failed: type=%s status=%s code=%s",
+                type(exc).__name__,
+                getattr(exc, "status_code", None),
+                error_code,
+            )
             raise IntentExtractionError("LLM intent extraction failed") from exc
     finally:
         if owns_client:

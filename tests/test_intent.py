@@ -330,8 +330,8 @@ def test_adversarial_message_cannot_expand_vocabulary():
     assert "not user activities" in schema["description"]
 
 
-def test_provider_failure_is_clear():
-    client = FakeClient(error=TimeoutError("provider timeout"))
+def test_provider_failure_is_clear_and_logs_only_safe_diagnostics(caplog):
+    client = FakeClient(error=TimeoutError("provider timeout: sentinel-secret"))
     with pytest.raises(IntentExtractionError, match="LLM intent extraction failed"):
         run(extract_intent(
             "Can I cycle?",
@@ -339,6 +339,8 @@ def test_provider_failure_is_clear():
             client=client,
             model="test-model",
         ))
+    assert "type=TimeoutError status=None code=None" in caplog.text
+    assert "sentinel-secret" not in caplog.text
 
 
 def test_invalid_structured_output_is_clear():
