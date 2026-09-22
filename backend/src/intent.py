@@ -96,18 +96,25 @@ async def extract_intent(
             body = getattr(exc, "body", None)
             error_code = body.get("code") if isinstance(body, dict) else None
             cause_types = []
+            protocol_error = "none"
             cause = exc.__cause__
             for _ in range(3):
                 if cause is None:
                     break
                 cause_types.append(type(cause).__name__)
+                if type(cause).__name__ == "LocalProtocolError":
+                    if "Illegal header value" in str(cause):
+                        protocol_error = "invalid_header_value"
+                    else:
+                        protocol_error = "other_local_protocol_error"
                 cause = cause.__cause__
             logger.error(
-                "LLM structured extraction failed: type=%s status=%s code=%s causes=%s",
+                "LLM structured extraction failed: type=%s status=%s code=%s causes=%s protocol=%s",
                 type(exc).__name__,
                 getattr(exc, "status_code", None),
                 error_code,
                 ">".join(cause_types) or "none",
+                protocol_error,
             )
             raise IntentExtractionError("LLM intent extraction failed") from exc
     finally:

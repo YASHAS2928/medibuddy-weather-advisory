@@ -1,5 +1,6 @@
 import asyncio
 
+import httpx
 import pytest
 
 from backend.src.config import Settings
@@ -331,7 +332,11 @@ def test_adversarial_message_cannot_expand_vocabulary():
 
 
 def test_provider_failure_is_clear_and_logs_only_safe_diagnostics(caplog):
-    client = FakeClient(error=TimeoutError("provider timeout: sentinel-secret"))
+    error = TimeoutError("provider timeout: sentinel-secret")
+    error.__cause__ = httpx.LocalProtocolError(
+        "Illegal header value b'Bearer sentinel-secret'"
+    )
+    client = FakeClient(error=error)
     with pytest.raises(IntentExtractionError, match="LLM intent extraction failed"):
         run(extract_intent(
             "Can I cycle?",
@@ -340,6 +345,7 @@ def test_provider_failure_is_clear_and_logs_only_safe_diagnostics(caplog):
             model="test-model",
         ))
     assert "type=TimeoutError status=None code=None" in caplog.text
+    assert "protocol=invalid_header_value" in caplog.text
     assert "sentinel-secret" not in caplog.text
 
 
