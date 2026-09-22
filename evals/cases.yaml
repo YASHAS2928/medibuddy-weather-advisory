@@ -70,12 +70,12 @@ cases:
           location: Bhopal
           activity: picnic
           audience: general
-          time_reference: {kind: tomorrow}
+          time_reference: {kind: tomorrow_midday}
         location_fixture: bhopal
         weather: {precipitation_probability: 75, weather_code: 0, uv_index: 2}
         expected:
           status: success
-          context: {activity: picnic, timeframe: tomorrow}
+          context: {activity: picnic, timeframe: tomorrow_midday}
           matched_policy_ids: [SOP-RAIN-PICNIC-01]
 
   - id: paraphrase_outdoor_gathering
@@ -202,7 +202,7 @@ cases:
           weather: {wind_speed_kmh: 43}
 
   - id: unsupported_activity_coverage
-    description: An unsupported activity should report no SOP coverage, but current intent/planner semantics may conservatively select broad policies.
+    description: An explicitly unsupported activity reports no SOP coverage and skips weather retrieval.
     category: no_policy_coverage
     turns:
       - message: Can I go swimming in Bhopal now?
@@ -216,6 +216,7 @@ cases:
         expected:
           status: no_applicable_policy
           candidate_policy_ids: []
+          weather_calls: 0
 
   - id: missing_location
     description: A request without location stops before geocoding or weather retrieval.

@@ -643,7 +643,7 @@ def write_report(
         "",
         "- Deterministic paraphrase cases validate the downstream structured-intent pipeline, not real model semantic interpretation.",
         "- Live LLM semantics are evaluated only when both `LLM_API_KEY` and `LLM_MODEL` are configured.",
-        "- An unknown activity may be represented as an absent activity. The planner then considers broad policies instead of proving that no SOP covers the user's actual activity; the no-coverage case records this behavior as a failure if it occurs.",
+        "- If the LLM misses an explicit unsupported activity, the planner may consider broad policies. The live semantic suite samples this failure mode but cannot prove coverage for every phrasing.",
         "- In-memory graph checkpoints remain process-local by design.",
         "",
         "## Interpretation",

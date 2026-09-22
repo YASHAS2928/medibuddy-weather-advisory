@@ -170,3 +170,4 @@ Add a validated entry to `policies/sops.yaml` with a unique ID, applicability ac
 - Session state is not shared across multiple backend instances.
 - Structured intent extraction depends on the configured model following the constrained schema; the live semantic suite detects regressions but cannot eliminate model variability.
 - Advice is limited to configured SOP coverage and the weather fields supported by the current provider adapter.
+- Live advisories depend on external weather-provider availability and rate limits; provider failures return `weather_error` rather than fabricated fallback conditions.
